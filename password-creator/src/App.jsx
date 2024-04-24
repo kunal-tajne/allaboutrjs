@@ -5,6 +5,7 @@ function App() {
   const [numAllowed, setNumAllowed] = useState(false);
   const [charAllowed, setCharAllowed] = useState(false);
   const [password, setPassword] = useState();
+  const [clicked, setClicked] = useState(false);
   const passwordRef = useRef(null);
 
   const passwordGenerator = useCallback(() => {
@@ -20,15 +21,14 @@ function App() {
     }
 
     setPassword(pass);
+    setClicked(false);
   }, [length, numAllowed, charAllowed, setPassword]);
 
-
   const copyToClipboard = useCallback(() => {
-
     passwordRef.current?.select();
     passwordRef.current?.setSelectionRange(0, 50);
-    window.navigator.clipboard.writeText(password)
-
+    window.navigator.clipboard.writeText(password);
+    setClicked(true);
   }, [password]);
 
   useEffect(() => {
@@ -50,7 +50,11 @@ function App() {
             readOnly
             ref={passwordRef}
           />
-          <button onClick={copyToClipboard} className="outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0">
+          <button
+            onClick={copyToClipboard}
+            className={`outline-none  text-white px-3 py-0.5 shrink-0`}
+            style={{backgroundColor: clicked ? '#BBBBBB' : '#0075FF'}}
+          >
             Copy
           </button>
         </div>
